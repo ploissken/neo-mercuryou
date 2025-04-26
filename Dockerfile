@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /home/node
 COPY package*.json ./
 RUN npm install
+RUN npm install pm2 -g
 COPY . .
 
-CMD ["npm", "start"]
+CMD ["pm2-runtime", "start", "ecosystem.config.js"]

@@ -1,4 +1,4 @@
-import swisseph from "swisseph";
+import { swisseph } from "swisseph";
 import { getAspects, getPlanets, getHouses } from "../utils/index.js";
 
 export const createChart = ({ date, longitude, latitude }) => {

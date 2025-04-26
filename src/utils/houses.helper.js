@@ -1,4 +1,4 @@
-import swisseph from "swisseph";
+import { swisseph } from "swisseph";
 import { calculateDegrees } from "./shared.helper.js";
 
 export const getHouses = (conf) => {
