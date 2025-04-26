@@ -1,5 +1,5 @@
-import { swisseph } from "swisseph";
 import { calculateDegrees } from "./shared.helper.js";
+const swisseph = await import("swisseph");
 
 export const getHouses = (conf) => {
   const houses = [];

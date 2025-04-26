@@ -1,5 +1,5 @@
-import { swisseph } from "swisseph";
 import { calculateDegrees } from "./shared.helper.js";
+const swisseph = await import("swisseph");
 
 const flag = swisseph.SEFLG_SPEED | swisseph.SEFLG_MOSEPH;
 

@@ -1,5 +1,6 @@
-import { swisseph } from "swisseph";
 import { getAspects, getPlanets, getHouses } from "../utils/index.js";
+
+const swisseph = await import("swisseph");
 
 export const createChart = ({ date, longitude, latitude }) => {
   const chart = {};
