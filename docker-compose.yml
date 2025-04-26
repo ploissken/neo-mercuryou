@@ -1,0 +1,24 @@
+services:
+  be-merc:
+    image: node:23-slim
+    container_name: be-merc
+    restart: unless-stopped
+    working_dir: /home/node
+    volumes:
+      - ./:/home/node/:cached
+    command: bash -c "npm install && npm run start"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=${PORT}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.be-merc.rule=Host(`be-merc.txto.com.br`)"
+      - "traefik.http.routers.be-merc.entrypoints=websecure"
+      - "traefik.http.routers.be-merc.tls.certresolver=myresolver"
+      - "traefik.http.services.be-merc.loadbalancer.server.port=${PORT}"
+    networks:
+      - traefik
+
+networks:
+  traefik:
+    external: true

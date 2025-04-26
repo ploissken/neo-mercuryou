@@ -2,11 +2,13 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon index.js",
-    "lint": "eslint '**/*.{js,mjs,cjs}' --fix"
+    "lint": "eslint '**/*.{js,mjs,cjs}' --fix",
+    "start": "pm2 start index.js"
   },
   "dependencies": {
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "pm2": "^6.0.5",
     "swisseph": "^0.5.17"
   },
   "devDependencies": {
