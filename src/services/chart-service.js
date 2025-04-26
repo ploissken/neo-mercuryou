@@ -1,6 +1,5 @@
 import { getAspects, getPlanets, getHouses } from "../utils/index.js";
-
-const swisseph = await import("swisseph");
+import { utc_to_jd, constants } from "sweph";
 
 export const createChart = ({ date, longitude, latitude }) => {
   const chart = {};
@@ -14,39 +13,40 @@ export const createChart = ({ date, longitude, latitude }) => {
     second: 0,
   };
 
-  swisseph.swe_utc_to_jd(
+  const {
+    data: [, ut],
+  } = utc_to_jd(
     utc.year,
     utc.month,
     utc.day,
     utc.hour,
     utc.minute,
     utc.second,
-    swisseph.SE_GREG_CAL,
-    (result) => {
-      const conf = {
-        ut: result.julianDayUT,
-        lat: latitude,
-        lon: longitude,
-      };
-      const planets = getPlanets(conf.ut);
-      const houses = getHouses(conf);
-
-      //   setPlanetHouse(plan, hous);
-
-      chart.metadata = {
-        date,
-        latitude,
-        longitude,
-        julDayUT: result.julianDayUT,
-        utc,
-      };
-
-      chart.planets = planets;
-      chart.houses = houses;
-      chart.ascendant = houses[0];
-      chart.aspects = getAspects(planets);
-    }
+    constants.SE_GREG_CAL
   );
+
+  const conf = {
+    ut,
+    lat: latitude,
+    lon: longitude,
+  };
+  const planets = getPlanets(conf.ut);
+  const houses = getHouses(conf);
+
+  //   setPlanetHouse(plan, hous);
+
+  chart.metadata = {
+    date,
+    latitude,
+    longitude,
+    julDayUT: ut,
+    utc,
+  };
+
+  chart.planets = planets;
+  chart.houses = houses;
+  chart.ascendant = houses[0];
+  chart.aspects = getAspects(planets);
 
   //   chart.elements = calculateElements(chart.planets, chart.houses);
 
