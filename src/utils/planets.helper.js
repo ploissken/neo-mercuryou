@@ -21,10 +21,14 @@ export const getPlanets = (juldayUT) => {
 
   defaultChartPlanets.forEach((planet) => {
     swisseph.swe_calc_ut(juldayUT, planet, flag, function (body) {
-      let pDirection = Math.round(body.longitudeSpeed * 1000) / 1000;
+      const planetSpeed = Math.round(body.longitudeSpeed * 1000) / 1000;
 
-      let direction = pDirection <= 0.01 ? "stationary" : "direct";
-      direction = pDirection <= -0.01 ? "retrograde" : direction;
+      const direction =
+        planetSpeed <= -0.01
+          ? "retrograde"
+          : planetSpeed >= 0.01
+          ? "direct"
+          : "stationary";
 
       const zodIndex = Math.floor(body.longitude / 30);
       const lang30 = body.longitude - zodIndex * 30;
