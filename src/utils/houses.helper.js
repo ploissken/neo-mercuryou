@@ -2,6 +2,10 @@ import { calculateDegrees } from "./shared.helper.js";
 import { sidtime, houses_ex } from "sweph";
 
 export const getHouses = (conf) => {
+  if (!conf.lat || !conf.lon) {
+    return [];
+  }
+
   const chartHouses = [];
   const sidereal_time = sidtime(conf.ut);
   const sideral_degree = sidereal_time.siderialTime * 15;

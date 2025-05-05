@@ -1,8 +1,26 @@
 import { getAspects, getPlanets, getHouses } from "../utils/index.js";
 import { utc_to_jd, constants } from "sweph";
+import { getTimezone } from "./timezone-service.js";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc.js";
+import timezone from "dayjs/plugin/timezone.js";
 
-export const createChart = ({ date, longitude, latitude }) => {
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+export const createChart = async ({ referenceDate, longitude, latitude }) => {
   const chart = {};
+  let date = new Date(referenceDate);
+
+  if (latitude && longitude) {
+    const tzResponse = await getTimezone({ latitude, longitude });
+    if (tzResponse.ok) {
+      const isoDateWithTZ = dayjs
+        .tz(referenceDate, tzResponse.data)
+        .toISOString();
+      date = new Date(isoDateWithTZ);
+    }
+  }
 
   const utc = {
     year: date.getUTCFullYear(),
@@ -49,6 +67,5 @@ export const createChart = ({ date, longitude, latitude }) => {
   chart.aspects = getAspects(planets);
 
   //   chart.elements = calculateElements(chart.planets, chart.houses);
-
   return chart;
 };
