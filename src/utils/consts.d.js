@@ -1,0 +1,1 @@
+export const PG_CONSTRAINT_VIOLATION_CODE = "23505";

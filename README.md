@@ -1,0 +1,12 @@
+Expected .env keys:
+
+```
+NODE_ENV
+PORT
+TZDB_API_KEY
+DB_USERNAME
+DB_HOST
+DB_NAME
+DB_PASSWORD
+DB_PORT
+```
