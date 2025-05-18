@@ -3,13 +3,10 @@ import { authMiddleware } from "../../utils/auth-middleware.js";
 import { updateUser } from "../../db/update-user.js";
 
 const router = Router();
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-router.post("/update", authMiddleware, async (req, res) => {
-  console.log("user/update yeah baby");
+router.post("/", authMiddleware, async (req, res) => {
   // TODO: add request check with express-validator
   const { fullName, username, genderIdentities, sexualOrientations } = req.body;
-  console.log(req.user);
   const user = await updateUser({
     id: req.user.id,
     fullName,
