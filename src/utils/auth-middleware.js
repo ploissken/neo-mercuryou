@@ -2,7 +2,7 @@ import { verifyToken } from "./jwt.js";
 
 export const authMiddleware = (req, res, next) => {
   const token = req.cookies.token;
-  if (!token) {
+  if (!token || token === "undefined") {
     return res.status(401).send({ ok: false, error: "unauthorized" });
   }
 

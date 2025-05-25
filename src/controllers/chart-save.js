@@ -16,10 +16,9 @@ export const chartSave = async (req, res) => {
     name,
     referenceDate,
     metadata: {
-      ...location,
-      locations: ["todo-send from fe"],
+      location,
+      locationName: location.displayName,
     },
   });
-
   res.send(savedChart);
 };
