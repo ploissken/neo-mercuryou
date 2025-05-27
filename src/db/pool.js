@@ -1,3 +1,7 @@
+import {
+  POOL_CONNECTION_TIMEOUT,
+  POOL_MAX_CONNECTIONS,
+} from "../utils/consts.d";
 import { Pool } from "pg";
 
 const pool = new Pool({
@@ -6,8 +10,8 @@ const pool = new Pool({
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
-  max: 10,
-  idleTimeoutMillis: 60000,
+  max: POOL_MAX_CONNECTIONS,
+  idleTimeoutMillis: POOL_CONNECTION_TIMEOUT,
 });
 
 export const query = (text, params) => pool.query(text, params);

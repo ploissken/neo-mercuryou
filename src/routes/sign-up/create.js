@@ -37,10 +37,10 @@ router.post("/create", async (req, res) => {
   } catch (err) {
     if (err.code === PG_CONSTRAINT_VIOLATION_CODE) {
       console.error(`[ERROR ${err.code}]: ${email} ${err.message}`);
-      return res.send({ ok: false, error: err.constraint });
+      return res.status(400).send({ ok: false, error: err.constraint });
     } else {
       console.error(`[ERROR ${err.code}]: ${err.message}`);
-      return res.send({ ok: false, error: err.code });
+      return res.status(500).send({ ok: false, error: err.code });
     }
   }
 });
