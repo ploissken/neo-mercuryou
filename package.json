@@ -5,9 +5,14 @@
     "lint": "eslint '**/*.{js,mjs,cjs}' --fix"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
     "dayjs": "^1.11.13",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "jsonwebtoken-esm": "^1.0.5",
+    "pg": "^8.16.0",
     "pm2": "^6.0.5",
     "sweph": "^2.10.3-4"
   },

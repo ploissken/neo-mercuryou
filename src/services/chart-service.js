@@ -55,8 +55,6 @@ export const createChart = async ({ referenceDate, longitude, latitude }) => {
 
   chart.metadata = {
     date,
-    latitude,
-    longitude,
     julDayUT: ut,
     utc,
   };
