@@ -1,7 +1,7 @@
 import {
   POOL_CONNECTION_TIMEOUT,
   POOL_MAX_CONNECTIONS,
-} from "../utils/consts.d";
+} from "../utils/consts.d.js";
 import { Pool } from "pg";
 
 const pool = new Pool({

@@ -8,17 +8,28 @@ import timezone from "dayjs/plugin/timezone.js";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-export const createChart = async ({ referenceDate, longitude, latitude }) => {
+export const createChart = async ({ chartDate, location }) => {
   const chart = {};
-  let date = new Date(referenceDate);
+  let date = new Date(dayjs(chartDate).utc(true).format());
+  let timezone = "unknown";
+  const naiveDate = {
+    year: date.getUTCFullYear(),
+    month: date.getUTCMonth() + 1,
+    day: date.getUTCDate(),
+    hour: date.getUTCHours(),
+    minute: date.getUTCMinutes(),
+    second: 0,
+    weekDay: date.getDay(),
+  };
 
+  const { latitude, longitude } = location || {};
   if (latitude && longitude) {
     const tzResponse = await getTimezone({ latitude, longitude });
     if (tzResponse.ok) {
-      const isoDateWithTZ = dayjs
-        .tz(referenceDate, tzResponse.data)
-        .toISOString();
+      timezone = tzResponse.data;
+      const isoDateWithTZ = dayjs.tz(chartDate, timezone).toISOString();
       date = new Date(isoDateWithTZ);
+      console.log("date TZ is", date);
     }
   }
 
@@ -57,6 +68,12 @@ export const createChart = async ({ referenceDate, longitude, latitude }) => {
     date,
     julDayUT: ut,
     utc,
+    location,
+    inputDate: {
+      naiveDate,
+      date: chartDate,
+    },
+    timezone,
   };
 
   chart.planets = planets;

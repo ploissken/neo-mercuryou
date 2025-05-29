@@ -1,18 +1,7 @@
 import { transaction } from "./pool.js";
 import { bulkInsert } from "../utils/bulk-insert.db.js";
 
-export async function insertChart({
-  userId,
-  chart,
-  name,
-  referenceDate,
-  metadata,
-}) {
-  const persistMetadata = {
-    ...chart.metadata,
-    ...metadata,
-  };
-
+export async function insertChart({ userId, chart, name, referenceDate }) {
   const ascSignIndex = chart.houses.length > 0 ? chart.houses[0].sign_id : -1;
 
   return await transaction(async (client) => {
@@ -28,7 +17,7 @@ export async function insertChart({
         JSON.stringify(chart.houses),
         name,
         referenceDate,
-        JSON.stringify(persistMetadata),
+        JSON.stringify(chart.metadata),
       ]
     );
 
