@@ -57,7 +57,7 @@ const getHouseForPlanet = (rotatedLongitude, houses) => {
 
 export const getPlanets = (juldayUT, houses) => {
   const planets = [];
-  const ascendant = houses[0].start_degree;
+  const ascendant = houses?.[0]?.start_degree || 0;
 
   defaultChartPlanets.forEach((planet) => {
     const {
