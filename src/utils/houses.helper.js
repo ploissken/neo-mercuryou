@@ -23,9 +23,13 @@ export const getHouses = (conf) => {
     const { degrees, minutes, seconds } = calculateDegrees(longitude);
 
     chartHouses.push({
+      houseIndex: index,
       house: index,
+      longitude: lang30,
       start_degree: lang30,
       normalized_degree: (longitude + 180) % 360,
+      renderLongitude: lang30 - (360 - houses[0]) + 180,
+      signIndex: zodIndex,
       sign_id: zodIndex,
       degrees: degrees % 30,
       minutes,

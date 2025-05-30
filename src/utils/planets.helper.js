@@ -57,6 +57,7 @@ const getHouseForPlanet = (rotatedLongitude, houses) => {
 
 export const getPlanets = (juldayUT, houses) => {
   const planets = [];
+  const ascendant = houses[0].start_degree;
 
   defaultChartPlanets.forEach((planet) => {
     const {
@@ -75,12 +76,17 @@ export const getPlanets = (juldayUT, houses) => {
     const lang30 = longitude - zodIndex * 30;
     const { degrees, minutes, seconds } = calculateDegrees(lang30);
     const planetLongitude = (longitude + 180) % 360;
+    const renderLongitude = -(planetLongitude + ascendant);
 
     planets.push({
       planet_id: planet,
+      planetIndex: planet,
       planet_name: defaultPlanetNames[planet],
       sign_id: zodIndex,
+      signIndex: zodIndex,
       longitude: planetLongitude,
+      renderLongitude,
+      renderMarker: renderLongitude,
       degrees,
       minutes,
       seconds,
@@ -91,4 +97,55 @@ export const getPlanets = (juldayUT, houses) => {
   });
 
   return planets;
+};
+
+export const treatPlanetaryCollision = (planets) => {
+  const COLLISION_THRESHOLD = 10;
+  const SPREAD_DELTA = 8;
+
+  const sortedPlanets = planets.sort(
+    (a, b) => a.renderLongitude - b.renderLongitude
+  );
+
+  const clusters = [];
+  let currentCluster = [];
+
+  for (let i = 0; i < sortedPlanets.length; i++) {
+    const currentPlanet = sortedPlanets[i];
+    const previousPlanet = sortedPlanets[i - 1];
+
+    if (
+      currentCluster.length === 0 ||
+      (previousPlanet &&
+        Math.abs(
+          currentPlanet.renderLongitude - previousPlanet.renderLongitude
+        ) <= COLLISION_THRESHOLD)
+    ) {
+      currentCluster.push(currentPlanet);
+    } else {
+      clusters.push(currentCluster);
+      currentCluster = [currentPlanet];
+    }
+  }
+
+  if (currentCluster.length > 0) {
+    clusters.push(currentCluster);
+  }
+
+  const colisionTreatedPlanets = [];
+
+  clusters.forEach((cluster) => {
+    const clusterCenter =
+      cluster.reduce((sum, planet) => sum + planet.renderLongitude, 0) /
+      cluster.length;
+
+    cluster.forEach((planet, index) => {
+      const adjustedLongitude =
+        clusterCenter + (index - Math.floor(cluster.length / 2)) * SPREAD_DELTA;
+      planet.renderLongitude = adjustedLongitude;
+      colisionTreatedPlanets.push(planet);
+    });
+  });
+
+  return colisionTreatedPlanets.sort((a, b) => a.planetIndex - b.planetIndex);
 };

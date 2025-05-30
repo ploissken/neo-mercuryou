@@ -1,4 +1,10 @@
-import { getAspects, getPlanets, getHouses } from "../utils/index.js";
+import {
+  getAspects,
+  getPlanets,
+  getHouses,
+  treatPlanetaryCollision,
+  calculateElements,
+} from "../utils/index.js";
 import { utc_to_jd, constants } from "sweph";
 import { getTimezone } from "./timezone-service.js";
 import dayjs from "dayjs";
@@ -73,11 +79,11 @@ export const createChart = async ({ chartDate, location }) => {
     timezone,
   };
 
-  chart.planets = planets;
+  chart.planets = treatPlanetaryCollision(planets);
   chart.houses = houses;
   chart.ascendant = houses[0];
   chart.aspects = getAspects(planets);
+  chart.elements = calculateElements(planets);
 
-  //   chart.elements = calculateElements(chart.planets, chart.houses);
   return chart;
 };

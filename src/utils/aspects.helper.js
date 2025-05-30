@@ -39,11 +39,14 @@ function doubleToDegree(deg) {
 
 const getAspectComplete = (p1, p2) => {
   let d = Math.abs(p1.longitude - p2.longitude);
-  let asp = aspects.find(
-    (a) =>
-      d >= Math.abs(a.degree - a.orbTolerance) &&
-      d <= Math.abs(a.degree + a.orbTolerance)
-  );
+  let asp =
+    d < aspects[0].orbTolerance // conjunction special case
+      ? aspects[0]
+      : aspects.find(
+          (a) =>
+            d >= Math.abs(a.degree - a.orbTolerance) &&
+            d <= Math.abs(a.degree + a.orbTolerance)
+        );
 
   if (asp) {
     // fast forward planet position based on its speed
@@ -81,9 +84,9 @@ export const getAspects = (planets) => {
       const asp = getAspectComplete(planets[i], planets[j]);
       if (asp !== -1) {
         aspectsArray.push({
-          aspect_id: asp.aID,
-          planet_a_id: planets[i].planet_id,
-          planet_b_id: planets[j].planet_id,
+          aspectIndex: asp.aID,
+          planetA: planets[i].planet_id,
+          planetB: planets[j].planet_id,
           value: asp.value,
           dms: asp.dms,
           direction: asp.direction,
