@@ -29,7 +29,6 @@ export const createChart = async ({ chartDate, location }) => {
       timezone = tzResponse.data;
       const isoDateWithTZ = dayjs.tz(chartDate, timezone).toISOString();
       date = new Date(isoDateWithTZ);
-      console.log("date TZ is", date);
     }
   }
 
@@ -59,10 +58,8 @@ export const createChart = async ({ chartDate, location }) => {
     lat: latitude,
     lon: longitude,
   };
-  const planets = getPlanets(conf.ut);
   const houses = getHouses(conf);
-
-  //   setPlanetHouse(plan, hous);
+  const planets = getPlanets(conf.ut, houses);
 
   chart.metadata = {
     date,

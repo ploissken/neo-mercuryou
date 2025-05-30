@@ -16,7 +16,6 @@ export const getHouses = (conf) => {
   const {
     data: { houses },
   } = houses_ex(conf.ut, 0, conf.lat, conf.lon, "P");
-
   houses.forEach((longitude, index) => {
     const zodIndex = Math.floor(longitude / 30);
     const lang30 = 360 - longitude;
@@ -26,6 +25,7 @@ export const getHouses = (conf) => {
     chartHouses.push({
       house: index,
       start_degree: lang30,
+      normalized_degree: (longitude + 180) % 360,
       sign_id: zodIndex,
       degrees: degrees % 30,
       minutes,
