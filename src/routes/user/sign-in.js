@@ -6,6 +6,7 @@ import { generateToken } from "../../utils/jwt.js";
 
 const router = Router();
 
+// TODO: put this in the controller
 router.post("/", async (req, res) => {
   // TODO: add request check with express-validator
   const { email, password } = req.body;

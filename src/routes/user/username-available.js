@@ -4,6 +4,7 @@ import { getByUsername } from "../../db/get-username.js";
 
 const router = Router();
 
+// TODO: put this in the controller
 router.get("/", authMiddleware, async (req, res) => {
   // TODO: add request check with express-validator
   const { username } = req.query;

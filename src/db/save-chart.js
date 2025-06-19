@@ -4,12 +4,12 @@ import { bulkInsert } from "../utils/bulk-insert.db.js";
 
 export async function insertChart({ userId, chart, name, referenceDate }) {
   const ascSignIndex = chart.houses.length > 0 ? chart.houses[0].signIndex : -1;
-  const sunSignIndex =
-    chart.planets.find((planet) => planet.planet_id === constants.SE_SUN)
-      ?.signIndex || -1;
-  const moonSignIndex =
-    chart.planets.find((planet) => planet.planet_id === constants.SE_MOON)
-      ?.signIndex || -1;
+  const sunSignIndex = chart.planets.find(
+    (planet) => planet.planet_id === constants.SE_SUN
+  ).signIndex;
+  const moonSignIndex = chart.planets.find(
+    (planet) => planet.planet_id === constants.SE_MOON
+  ).signIndex;
 
   return await transaction(async (client) => {
     const {
@@ -49,12 +49,20 @@ export async function insertChart({ userId, chart, name, referenceDate }) {
         direction: planet.direction,
         house: planet.house,
       }),
+      userId,
     ]);
 
     const persistedPlanets = await bulkInsert(
       client,
       "planets",
-      ["chart_id", "planet_index", "sign_index", "longitude", "metadata"],
+      [
+        "chart_id",
+        "planet_index",
+        "sign_index",
+        "longitude",
+        "metadata",
+        "owner_id",
+      ],
       planetRows
     );
 
